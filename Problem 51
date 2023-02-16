@@ -1,0 +1,48 @@
+from collections import defaultdict
+import itertools
+
+def is_prime(n):
+    if n < 2:
+        return False
+    if n == 2:
+        return True
+    if n % 2 == 0:
+        return False
+    for i in range(3, int(n**0.5)+1, 2):
+        if n % i == 0:
+            return False
+    return True
+
+def count_prime_family(prime, digits, memo):
+    count = 0
+    for digit in digits:
+        if digit in memo:
+            count += memo[digit]
+        else:
+            n = int(str(prime).replace(digit, '*'))
+            c = sum(is_prime(int(n.replace('*', str(d)))) for d in range(10))
+            memo[digit] = c
+            count += c
+    return count
+
+primes = set()
+memo = {}
+for n in range(10001, 1000000, 2):
+    if n in primes:
+        continue
+    if any(digit in str(n) for digit in '024568'):
+        continue
+    if not is_prime(n):
+        continue
+    primes.add(n)
+    digits = defaultdict(list)
+    for i, digit in enumerate(str(n)):
+        digits[digit].append(i)
+    for digit, indices in digits.items():
+        if len(indices) < 3:
+            continue
+        for candidate_digit in range(int(digit)+1, 10, 2):
+            count = count_prime_family(n, [digit, str(candidate_digit)], memo)
+            if count >= 8:
+                print(n)
+                exit()
