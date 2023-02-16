@@ -1,0 +1,58 @@
+from math import sqrt
+
+def is_torricelli(a, b, c):
+    # Compute the coordinates of the vertices of the equilateral triangles
+    cos_60 = 0.5
+    sin_60 = sqrt(3)/2
+    xa, ya = 0, 0
+    xb, yb = c, 0
+    xc = (a**2 + c**2 - b**2) / (2*c)
+    yc = sqrt(a**2 - xc**2)
+    xa1 = xa*cos_60 - ya*sin_60
+    ya1 = xa*sin_60 + ya*cos_60
+    xb1 = xb*cos_60 - yb*sin_60
+    yb1 = xb*sin_60 + yb*cos_60
+    xc1 = xc*cos_60 - yc*sin_60
+    yc1 = xc*sin_60 + yc*cos_60
+    xa2 = xa*cos_60 + ya*sin_60
+    ya2 = -xa*sin_60 + ya*cos_60
+    xb2 = xb*cos_60 + yb*sin_60
+    yb2 = -xb*sin_60 + yb*cos_60
+    xc2 = xc*cos_60 + yc*sin_60
+    yc2 = -xc*sin_60 + yc*cos_60
+    
+    # Compute the coordinates of the Fermat/Torricelli point
+    t = ((xa1 - xb2)**2 + (ya1 - yb2)**2)**0.5
+    u = ((xa2 - xc1)**2 + (ya2 - yc1)**2)**0.5
+    v = ((xb1 - xc2)**2 + (yb1 - yc2)**2)**0.5
+    s = (t + u + v)/2
+    area = sqrt(s*(s-t)*(s-u)*(s-v))
+    r = area/(s*sqrt(3))
+    cos_alpha = (t**2 + s**2 - u**2)/(2*t*s)
+    sin_alpha = sqrt(1 - cos_alpha**2)
+    x = xa1 + s*cos_alpha
+    y = ya1 + s*sin_alpha
+    
+    # Compute p, q, r and check if the triangle is Torricelli
+    p = ((x - xa)**2 + (y - ya)**2)**0.5
+    q = ((x - xc)**2 + (y - yc)**2)**0.5
+    r = ((x - xb)**2 + (y - yb)**2)**0.5
+    if p + q + r <= 120000:
+        return p + q + r
+    else:
+        return 0
+
+# Generate all possible Torricelli triangles with p + q + r ≤ 120000
+torricelli_sum_set = set()
+for a in range(1, 4000):
+    for b in range(a+1, 4000):
+        c = int(sqrt(a**2 + b**2))
+        if c**2 == a**2 + b**2:
+            torricelli = is_torricelli(a, b, c)
+            if torricelli != 0:
+                torricelli_sum_set.add(torricelli)
+
+# Compute the sum of all distinct values of p + q + r ≤ 120000
+torricelli_sum = sum(torricelli_sum_set)
+
+print(torricelli_sum)
