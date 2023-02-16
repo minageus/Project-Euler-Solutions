@@ -1,0 +1,13 @@
+a = [2, 3]
+b = [1, 1]
+for n in range(2, 101):
+    c = 1
+    if n % 3 == 0:
+        c = 2 * (n // 3)
+    a.append(c * a[n-1] + a[n-2])
+    b.append(c * b[n-1] + b[n-2])
+
+numerator = a[100]
+
+num_str = str(numerator)
+digit_sum = sum(int(c) for c in num_str)
