@@ -1,0 +1,15 @@
+def gcd(a, b):
+    if b == 0:
+        return a
+    return gcd(b, a % b)
+
+fractions = []
+for d in range(2, 1000001):
+    for n in range(int(d * 3 / 7) - 1, 0, -1):
+        if gcd(n, d) == 1:
+            fractions.append((n, d))
+
+fractions.sort(key=lambda x: x[0] / x[1])
+
+index = fractions.index((3, 7))
+print(fractions[index - 1][0])
