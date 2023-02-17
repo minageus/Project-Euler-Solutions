@@ -1,0 +1,18 @@
+def is_bouncy(n):
+    s = str(n)
+    increasing = all(s[i] <= s[i+1] for i in range(len(s)-1))
+    decreasing = all(s[i] >= s[i+1] for i in range(len(s)-1))
+    return not (increasing or decreasing)
+
+bouncy_count = 0
+total_count = 0
+n = 1
+
+while True:
+    if is_bouncy(n):
+        bouncy_count += 1
+    total_count += 1
+    if bouncy_count/total_count == 0.99:
+        print(n)
+        break
+    n += 1
