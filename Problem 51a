@@ -1,0 +1,40 @@
+from collections import defaultdict
+from itertools import combinations
+
+def generate_replacements(num):
+    """Generate all possible replacements of num."""
+    digits = list(str(num))
+    for n in range(2, len(digits) + 1):
+        for indices in combinations(range(len(digits)), n):
+            for digits_set in combinations(set(digits[i] for i in indices), 1):
+                yield tuple(digits_set) + tuple(digits[i] if i not in indices else '*' for i in range(len(digits)))
+
+def generate_family(num, digits):
+    """Generate the family of numbers obtained by replacing digits in num with all possible digits."""
+    family = []
+    for d in range(10):
+        family_num = int(''.join(digits if c == '*' else c for c in str(num)).replace('*', str(d)))
+        if family_num != num and family_num not in family:
+            family.append(family_num)
+    return family
+
+def smallest_prime_in_family(n_primes):
+    # Precompute all primes up to a limit
+    limit = 1000000
+    is_prime = [True] * limit
+    is_prime[0] = is_prime[1] = False
+    for i in range(2, int(limit ** 0.5) + 1):
+        if is_prime[i]:
+            for j in range(i ** 2, limit, i):
+                is_prime[j] = False
+    primes = set(i for i in range(limit) if is_prime[i])
+
+    # Check each number for the given family size
+    for num in range(10, limit):
+        for replacement in generate_replacements(num):
+            family = generate_family(num, replacement)
+            n_primes_in_family = sum(1 for n in family if n in primes)
+            if n_primes_in_family == n_primes:
+                return min(family)
+
+print(smallest_prime_in_family(8))
