@@ -18,7 +18,7 @@ def check_condition(n):
     return True
 
 result = 12  # account for the case of n=12
-for n in range(1, 100000001):
-    if check_condition(n):
-        result += n
+for i in range(1, 10001):
+    if check_condition(i*i):
+        result += i*i
 print(result)
