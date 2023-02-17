@@ -1,0 +1,19 @@
+def reverse(n):
+    """Return the integer obtained by reversing the digits of n."""
+    rev = 0
+    while n > 0:
+        rev = 10 * rev + n % 10
+        n //= 10
+    return rev
+
+count = 0
+for n in range(1, 10**9):
+    # Check that n and reverse(n) have no leading zeroes
+    if n % 10 != 0 and reverse(n) % 10 != 0:
+        # Calculate the sum of n and reverse(n)
+        s = n + reverse(n)
+        # Check that s has only odd digits
+        if all(int(d) % 2 == 1 for d in str(s)):
+            count += 1
+
+print(count)
