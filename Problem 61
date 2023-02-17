@@ -1,0 +1,34 @@
+from collections import defaultdict
+
+# Generate all 4-digit figurate numbers for each type
+figurate_numbers = defaultdict(list)
+for n in range(1, 150):
+    for f, formula in [(3, lambda n: n*(n+1)//2), (4, lambda n: n**2),
+                       (5, lambda n: n*(3*n-1)//2), (6, lambda n: n*(2*n-1)),
+                       (7, lambda n: n*(5*n-3)//2), (8, lambda n: n*(3*n-2))]:
+        num = formula(n)
+        if num >= 1000 and num < 10000:
+            figurate_numbers[f].append(num)
+
+# Recursive function to find cyclic sets of figurate numbers
+def find_cyclic_sets(cycle, types_left):
+    if not types_left:
+        if cycle[-1] % 100 == cycle[0] // 100:
+            return cycle
+        else:
+            return None
+    for f in types_left:
+        for num in figurate_numbers[f]:
+            if num // 100 in cycle:
+                continue
+            next_cycle = find_cyclic_sets(cycle + [num], types_left - {f})
+            if next_cycle:
+                return next_cycle
+
+# Find the solution
+types_left = {3, 4, 5, 6, 7, 8}
+for num in figurate_numbers[3]:
+    cycle = find_cyclic_sets([num], types_left - {3})
+    if cycle:
+        print(sum(cycle))
+        break
