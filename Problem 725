@@ -1,0 +1,23 @@
+MOD = 10**16
+
+# Compute dp array
+dp = [[[0 for _ in range(46)] for _ in range(10)] for _ in range(2021)]
+for j in range(1, 10):
+    dp[1][j][j] = 1
+for i in range(2, 2021):
+    for j in range(0, 10):
+        for s in range(0, 46):
+            for k in range(0, 10):
+                if j-k >= 0 and s-j >= 0:
+                    dp[i][j][s] += dp[i-1][j-k][s-j]
+            dp[i][j][s] %= MOD
+
+# Compute S(2020)
+ans = 0
+for i in range(1, 2021):
+    for j in range(1, 10):
+        for s in range(j, 46):
+            ans += dp[i][j][s]
+            ans %= MOD
+
+print(ans % MOD)
