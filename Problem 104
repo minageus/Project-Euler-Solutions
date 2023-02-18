@@ -1,0 +1,13 @@
+def is_pandigital(n):
+    digits = set(str(n))
+    return len(digits) == 9 and '0' not in digits
+
+def solve():
+    a, b = 1, 1
+    k = 2
+    while True:
+        c = a + b
+        if is_pandigital(c % 1000000000) and is_pandigital(int(str(c)[:9])):
+            return k
+        a, b = b, c
+        k += 1
