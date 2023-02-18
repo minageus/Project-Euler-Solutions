@@ -1,0 +1,18 @@
+from numpy import convolve
+
+def probability_distribution(n, sides):
+    # Compute the probability distribution of the total score for n dice with given number of sides
+    p = [1/sides] * sides
+    for i in range(n-1):
+        p = convolve(p, [0] * (sides-1) + [1/sides])
+    return p
+
+peter = probability_distribution(9, 4)
+colin = probability_distribution(6, 6)
+
+P = 0
+for i in range(len(peter)):
+    for j in range(i):
+        P += peter[i] * colin[j]
+
+print(round(P, 7))
