@@ -1,0 +1,11 @@
+def euler_totient_sieve(n):
+    totients = list(range(n + 1))
+    for p in range(2, n + 1):
+        if totients[p] == p:  # p is prime
+            for k in range(p, n + 1, p):
+                totients[k] -= totients[k] // p
+    return totients
+
+n = 1000000
+totients = euler_totient_sieve(n)
+print(sum(totients[2:]))
