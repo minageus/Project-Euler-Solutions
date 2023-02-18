@@ -1,0 +1,3 @@
+With Pari/GP
+default(primelimit,5*10^7)
+f(n)=k=sqrtint(n);s=0;forprime(p=2,k,s+=primepi(n/p)-primepi(p-1));return(s)
