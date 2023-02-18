@@ -1,0 +1,14 @@
+def rmax(a):
+    b = a - 1 if a % 2 == 1 else a - 2
+    r = 0
+    for n in range(1, a):
+        if n % 2 == 0:
+            rn = 2 * a * n % (a * a)
+        else:
+            rn = 2 * b * n % (a * a)
+        r = max(r, rn)
+        if rn == a * (a - 1):
+            break
+    return r
+
+print(sum(rmax(a) for a in range(3, 1001)))
