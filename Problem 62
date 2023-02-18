@@ -1,0 +1,22 @@
+def count_permutation_cubes(n):
+    # Returns the number of permutations of n that are also cubes
+    digits = sorted(str(n))
+    count = 0
+    for i in range(1, 10):
+        if str(i**3) in [''.join(digits)] + list(map(''.join, itertools.permutations(digits))):
+            count += 1
+    return count
+
+cubes = {}
+n = 1
+while True:
+    cube = n**3
+    count = count_permutation_cubes(cube)
+    if count in cubes:
+        cubes[count].append(cube)
+        if len(cubes[count]) == 5:
+            print(min(cubes[count]))
+            break
+    else:
+        cubes[count] = [cube]
+    n += 1
