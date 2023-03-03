@@ -1,0 +1,37 @@
+from collections import Counter
+
+def prime_factors(n):
+    """Returns the prime factors of n."""
+    factors = []
+    d = 2
+    while d * d <= n:
+        while (n % d) == 0:
+            factors.append(d)
+            n //= d
+        d += 1
+    if n > 1:
+        factors.append(n)
+    return factors
+
+def totient(n):
+    """Returns the value of Euler's totient function φ(n)."""
+    if n == 1:
+        return 1
+    prime_counts = Counter(prime_factors(n))
+    result = 1
+    for p, count in prime_counts.items():
+        result *= (p - 1) * p ** (count - 1)
+    return result
+
+min_ratio = float("inf")
+result = 0
+
+for n in range(2, 10**7):
+    phi = totient(n)
+    if sorted(str(phi)) == sorted(str(n)):
+        ratio = n / phi
+        if ratio < min_ratio:
+            min_ratio = ratio
+            result = n
+
+print(result)
