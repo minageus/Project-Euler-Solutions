@@ -1,0 +1,10 @@
+def summation(m,n):
+  sum = m
+  while m!=0:
+    n%=m
+    while m>=n:
+      m-=n
+      sum+=m
+  return sum
+
+print(summation(1507170715041707,4503599627379017))
